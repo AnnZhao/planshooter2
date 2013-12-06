@@ -1,0 +1,54 @@
+import student.TestCase;
+
+/**
+ * // -------------------------------------------------------------------------
+/**
+ *  this class  is the test case for contact class.
+ * 
+ *  @author Zhenshu Zhao (zzhens7)
+ *  @author Yusheng Zhang(yusheng)
+ *  @version 2013.12.06
+ */
+public class ContactTest
+extends TestCase
+{
+private Contact ca;
+private Contact cb;
+private Contact cc;
+private Contact cd;
+
+
+/**
+ * ...
+ */
+public void setUp()
+{
+    String stra = "1";
+    String strb = "11";
+    String strc = "111";
+    String strd = "1111";
+    String stre = "11111";
+    String strf = "111111";
+    String strg = "1111111";
+
+    ca = new Contact(stra, strb, strc);
+    cb = new Contact(stra, strb, strd);
+    cc = new Contact(stra, stre, strc);
+    cd = new Contact(strb, strf, strg);
+
+}
+
+
+/**
+ * ...
+ */
+public void test()
+{
+    assertEquals(ca.compareTo(ca), 0);
+    assertTrue(ca.compareTo(cb) > 0);
+    assertTrue(ca.compareTo(cc) > 0);
+    assertTrue(ca.compareTo(cd) > 0);
+
+}
+
+}

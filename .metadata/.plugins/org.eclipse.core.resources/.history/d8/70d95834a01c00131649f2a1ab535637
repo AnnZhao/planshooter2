@@ -1,0 +1,229 @@
+package cs2114.minesweeper;
+import sofia.util.Random;
+/**
+ * // -------------------------------------------------------------------------
+/**
+ *  This programming project is implementing the playing board for Mine Sweeper.
+ *  The game makes use of the Model/View/Controller design pattern
+ *  (MVC) that will be covered in class.
+ *  @author Zhenshu Zhao (zzhens7)
+ *  @version 2013-9-12
+ */
+public class MineSweeperBoard extends MineSweeperBoardBase
+{
+    private int height;
+    private int width;
+    private int mine;
+    private Random regn;
+    private MineSweeperCell [][] MineBoard;
+    /**
+     * i is i
+     */
+    int i;
+
+    int j;
+    int t;
+    int p;
+    int w = 0;
+    int correctFlag = 0;
+    int fakeFlag = 0;
+    int gameLost = 0;
+
+/**
+ * @param width is width
+ * @param height is height
+ * @param mine is mine
+ */
+    public MineSweeperBoard(int width, int height, int mine)
+    {
+        this.width = width;
+        this.height = height;
+        this.mine = mine;
+        regn = new sofia.util.Random();
+        MineBoard = new MineSweeperCell [height][width];
+        for (t = 0; t < width; t++)
+        {
+            for (p = 0; p < height; p++)
+            {
+                MineBoard[t][p] = MineSweeperCell.COVERED_CELL;
+            }
+        }
+
+        while (mine > 0)
+        {
+            int wit1 = regn.nextInt(1, height);
+            int hit1 = regn.nextInt(1, width);
+            if (MineBoard[wit1][hit1] == MineSweeperCell.MINE)
+            {
+                //
+            }
+            else
+            {
+                MineBoard[wit1][hit1] = MineSweeperCell.MINE;
+                mine--;
+            }
+        }
+
+
+    }
+    public MineSweeperCell getCell(int x, int y)
+    {
+        if (x >= 0 && y >=0)
+        {
+        for (x = 0; x <= width; x++)
+        {
+            for (y = 0; y <= height; y++)
+                {
+                    MineBoard[x][y] = getCell(x,y);
+
+                }
+
+        }
+        }
+        else
+        {
+            MineBoard[x][y] = MineSweeperCell.INVALID_CELL;
+        }
+        
+        return MineBoard[x][y];
+    }
+    public void flagCell(int x, int y)
+    {
+        if (getCell(x, y) == MineSweeperCell.MINE)
+        {
+            MineBoard[x][y] = MineSweeperCell.FLAGGED_MINE;
+            correctFlag++;
+        }
+        else if (getCell(x, y) == MineSweeperCell.COVERED_CELL)
+        {
+            MineBoard[x][y] = MineSweeperCell.FLAG;
+            fakeFlag++;
+        }
+        else if (
+            getCell(x, y) == MineSweeperCell.FLAG)
+        {
+            MineBoard[x][y] = MineSweeperCell.COVERED_CELL;
+            fakeFlag--;
+        }
+        else if (getCell(x, y) == MineSweeperCell.FLAGGED_MINE)
+        {
+            MineBoard[x][y] = MineSweeperCell.MINE;
+            correctFlag--;
+        }
+        else
+        {
+           /**
+            *
+            */
+        }
+    }
+    public int height()
+    {
+        return height;
+    }
+    public int width()
+    {
+        return width;
+    }
+    public int numberOfAdjacentMines(int x, int y)
+    {
+        int count = 0;
+        for (i = x - 1; i < x + 2; i++)
+            for (j = y - 1; j < x + 2; j++)
+                if (MineBoard[x][y] == MineSweeperCell.MINE)
+                {
+                    count = count + 1;
+                }
+        return count;
+    }
+    public void uncoverCell (int x, int y)
+    {
+        int numOfAM;
+        if (getCell(x,y) == MineSweeperCell.FLAGGED_MINE)
+        {
+            MineBoard[x][y] = MineSweeperCell.FLAGGED_MINE;
+        }
+        else if (getCell(x,y) == MineSweeperCell.FLAG)
+        {
+            MineBoard[x][y]= MineSweeperCell.FLAG;
+        }
+        else if (getCell(x,y) == MineSweeperCell.COVERED_CELL)
+        {
+            numOfAM = numberOfAdjacentMines(x, y);
+            MineBoard[x][y] = MineSweeperCell.adjacentTo(numOfAM);
+        }
+        else if (getCell(x,y) == MineSweeperCell.MINE)
+        {
+            gameLost = 1;
+        }
+    }
+    public void revealBoard ()
+    {
+        int numOfAM1;
+        for (int t = 0; t < width; t++)
+        {
+            for (int p = 0; p < height; p++)
+            {
+                if (getCell(t, p) == MineSweeperCell.FLAGGED_MINE)
+                {
+                    MineBoard[t][p] = MineSweeperCell.UNCOVERED_MINE;
+                }
+                else if (getCell(t, p) == MineSweeperCell.FLAG)
+                {
+                    numOfAM1 = numberOfAdjacentMines(t, p);
+                    MineBoard[t][p] = MineSweeperCell.adjacentTo(numOfAM1);
+                }
+            }
+        }
+    }
+
+    public boolean isGameWon()
+    {
+        boolean isGameWon = false;
+        int CoverCount = 0;
+        for (int i=0; i < width; i++)
+        {
+            for (int j=0; j< height; j++)
+            {
+                if (MineBoard[i][j] == MineSweeperCell.COVERED_CELL)
+                {
+                    CoverCount+=1;
+                }
+            }
+        }
+        if (correctFlag == mine && fakeFlag == 0 && CoverCount == 0)
+        {
+            isGameWon = true;
+        }
+        return isGameWon;
+    }
+    public boolean isGameLost()
+    {
+        boolean isGameLost = false;
+        while(!isGameWon())
+        {
+            for (int x=0; i < width; i++)
+            {
+                for (int y=0; j< height; j++)
+                {
+                    if (MineBoard[x][y] == MineSweeperCell.UNCOVERED_MINE)
+                    {
+                        isGameLost = true;
+                    }
+                }
+            }
+        }
+        return isGameLost;
+    }
+    protected void setCell (int x, int y, MineSweeperCell value)
+    {
+        if(x < height && x >= 0 && y < width && y >= 0)
+        {
+            MineBoard[x][y] = value;
+        }
+    }
+}
+
+
+
+

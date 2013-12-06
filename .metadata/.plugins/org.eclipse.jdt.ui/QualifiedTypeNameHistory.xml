@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="java.lang.System"/>
+<fullyQualifiedTypeName name="sofia.util.Random"/>
+<fullyQualifiedTypeName name="cs2114.mazesolver.MazeCell"/>
+<fullyQualifiedTypeName name="realtimeweb.yelp.BusinessQuery"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="java.awt.List"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="realtimeweb.yelp.SearchResponse"/>
+<fullyQualifiedTypeName name="realtimeweb.yelp.exceptions.BusinessSearchException"/>
+<fullyQualifiedTypeName name="realtimeweb.yelp.Review"/>
+<fullyQualifiedTypeName name="java.util.HashMap"/>
+</qualifiedTypeNameHistroy>

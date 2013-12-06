@@ -1,0 +1,183 @@
+package cs2114.restaurant;
+
+import realtimeweb.yelp.Business;
+import realtimeweb.yelp.BusinessSearchListener;
+import java.util.List;
+import realtimeweb.yelp.BusinessQuery;
+import realtimeweb.yelp.BusinessSearch;
+import realtimeweb.yelp.SearchResponse;
+import android.widget.*;
+import android.net.Uri;
+import sofia.app.Screen;
+import sofia.widget.ImageView;
+import sofia.content.ContentViewer;
+import realtimeweb.yelp.exceptions.BusinessSearchException;
+
+// -------------------------------------------------------------------------
+/**
+ * this class is the restautantscreen.
+ *
+ * @author zhenshu Zhao (zzhens7)
+ * @version (2013.12.1)
+ */
+public class RestaurantScreen
+extends Screen
+implements BusinessSearchListener
+{
+// ~ Fields ................................................................
+
+/**
+ * BusinessSearch Field.
+ */
+BusinessSearch               search;
+/**
+ * Business Field.
+ */
+Business                     business;
+
+/**
+ * List Field.
+ */
+CircularLinkedList<Business> list;
+
+private EditText             searchField;
+private TextView             restaurantName;
+private TextView             numRatings;
+private RatingBar            ratingBar;
+private Button               viewMap;
+private ImageView            imageView;
+private Button               next;
+private Button               previous;
+
+
+/**
+ * initialize everything.
+ */
+public void initialize()
+{
+
+    search = BusinessSearch.getInstance();
+    list = new CircularLinkedList<Business>();
+    previous.setEnabled(false);
+    next.setEnabled(false);
+    viewMap.setEnabled(false);
+}
+
+
+/**
+ * this method will make a request to the service.
+ * @arg the respond lists.
+ */
+@Override
+public void businessSearchCompleted(SearchResponse arg)
+{
+    if (arg.getBusinesses().isEmpty())
+    {
+        previous.setEnabled(false);
+        next.setEnabled(false);
+        viewMap.setEnabled(false);
+    }
+    else
+    {
+        previous.setEnabled(true);
+        next.setEnabled(true);
+        viewMap.setEnabled(true);
+        list.clear();
+        List<Business> argList = arg.getBusinesses();
+
+        for (int i = argList.size() - 1; i >= 0; i--)
+        {
+            list.add(argList.get(i));
+        }
+        // call changeGUI method
+        changeGUI();
+    }
+}
+
+
+@Override
+public void businessSearchFailed(BusinessSearchException arg0)
+{
+    previous.setEnabled(false);
+    next.setEnabled(false);
+    viewMap.setEnabled(false);
+
+}
+
+
+// ----------------------------------------------------------
+/**
+ * searchField editor.
+ */
+public void searchFieldEditingDone()
+{
+    search.searchBusinesses(new BusinessQuery(searchField.getText()
+        .toString()), new BusinessSearchGUIAdapter(this));
+}
+
+
+// ----------------------------------------------------------
+/**
+ * next button click.
+ */
+public void nextClicked()
+{
+    list.next();
+    changeGUI();
+}
+
+
+// ----------------------------------------------------------
+/**
+ * previous button click.
+ */
+public void previousClicked()
+{
+    list.previous();
+    changeGUI();
+}
+
+
+// ----------------------------------------------------------
+/**
+ * viewMap button click.
+ */
+public void viewMapClicked()
+{
+
+    String uriString =
+        "http//maps.google.com/maps?q="
+            + list.getCurrent().getLocation().getLatitude() + ","
+            + list.getCurrent().getLocation().getLongitude();
+
+    Uri uri = Uri.parse(uriString);
+    new ContentViewer(uri).start(this);
+}
+
+
+// ----------------------------------------------------------
+/**
+ * change the data on GUI.
+ */
+public void changeGUI()
+{
+
+    // The number of the ratings.
+    numRatings
+        .setText(Integer.toString(list.getCurrent().getReviewCount()));
+    // the start bat ratings.
+    ratingBar.setRating(list.getCurrent().getRating());
+    // the restaurant name.
+    restaurantName.setText(list.getCurrent().getName());
+    // the image to display.
+    if (list.getCurrent().getImageUrl() == null)
+    {
+        imageView.setImageURI(null);
+    }
+    else
+    {
+        imageView.setImageURI(Uri.parse(list.getCurrent().getImageUrl()));
+    }
+
+}
+}

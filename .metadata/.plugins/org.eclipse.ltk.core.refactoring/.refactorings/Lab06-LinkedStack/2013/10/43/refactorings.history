@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;NodeTest.java&apos; to &apos;Lab08-Deque/src/(default package)&apos;&#x0D;&#x0A;- Original project: &apos;Lab06-LinkedStack&apos;&#x0D;&#x0A;- Destination element: &apos;Lab08-Deque/src/(default package)&apos;&#x0D;&#x0A;- Original element: &apos;NodeTest.java&apos;" description="Copy compilation unit" destination="=Lab08-Deque/src&lt;" element1="/src&lt;{NodeTest.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1382721110918" units="1" version="1.0"/>
+</session>

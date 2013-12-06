@@ -1,0 +1,7 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item android:title="Reveal Board" android:id="@+id/revealBoard" android:icon="@drawable/icon_reveal" android:showAsAction="always|withText" android:titleCondensed="Reveal"></item>
+    <item android:title="Restart" android:id="@+id/restartGame" android:icon="@drawable/icon_restart" android:showAsAction="always|withText" android:titleCondensed="Restart"></item>
+    <item android:title="Change Difficulty" android:id="@+id/changeDifficulty" android:icon="@drawable/icon_difficulty" android:showAsAction="always|withText" android:titleCondensed="Difficulty"></item>
+
+</menu>

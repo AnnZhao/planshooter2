@@ -1,0 +1,72 @@
+import student.TestCase;
+
+/**
+ * // -------------------------------------------------------------------------
+ * /** this class is the test class for binary search tree.h
+ *
+ * @author Zhenshu Zhao (zzhens7)
+ * @author Yusheng Zhang(yusheng)
+ * @version 2013.12.06
+ */
+
+public class BinarySearchTreeTest
+    extends TestCase
+{
+    private BinarySearchTree<String> test;
+    private String                   stra;
+    private String                   strb;
+    private String                   strc;
+    private String                   strd;
+    private String                   stre;
+    private String                   strf;
+    private String                   strg;
+
+
+    /**
+     * ...
+     */
+    public void setUp()
+    {
+        stra = "1";
+        strb = "11";
+        strc = "111";
+        strd = "1111";
+        stre = "11111";
+        strf = "111111";
+        strg = "1111111";
+        test = new BinarySearchTree<String>();
+        test.insert(strd);
+        test.insert(strb);
+        test.insert(strf);
+        test.insert(stra);
+        test.insert(strc);
+        test.insert(stre);
+        test.insert(strg);
+
+    }
+
+
+    /**
+     * ...
+     */
+    public void test()
+    {
+        test.remove(strg);
+        assertEquals(test.findMax(), strf);
+        test.remove(stra);
+        assertEquals(test.findMin(), strb);
+        test.remove(strd);
+        assertEquals(test.find(strd), null);
+        assertEquals(test.findMax(), strf);
+        assertEquals(test.findMin(), strb);
+        test.remove(stre);
+        test.remove(strf);
+        test.remove(strc);
+        assertFalse(test.isEmpty());
+        test.makeEmpty();
+        assertTrue(test.isEmpty());
+        assertNull(test.findMin());
+        assertNull(test.findMax());
+    }
+
+}

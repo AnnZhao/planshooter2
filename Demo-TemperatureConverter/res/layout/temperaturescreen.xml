@@ -1,0 +1,58 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TemperatureScreen" >
+
+    <TextView
+        android:id="@+id/fahrenheitLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="14dp"
+        android:layout_marginTop="14dp"
+        android:text="Degrees Fahrenheit:"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/fahrenheitField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/fahrenheitLabel"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/fahrenheitLabel"
+        android:layout_marginRight="16dp"
+        android:ems="10"
+        android:inputType="numberDecimal|numberSigned" />
+
+    <TextView
+        android:id="@+id/celsiusLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/fahrenheitField"
+        android:layout_below="@+id/fahrenheitField"
+        android:layout_marginTop="14dp"
+        android:text="Degrees Celsius:"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/celsiusField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/celsiusLabel"
+        android:layout_alignRight="@+id/fahrenheitField"
+        android:layout_below="@+id/celsiusLabel"
+        android:ems="10"
+        android:inputType="numberDecimal|numberSigned" />
+
+    <Button
+        android:id="@+id/clearFields"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/celsiusField"
+        android:layout_below="@+id/celsiusField"
+        android:layout_marginTop="14dp"
+        android:text="Clear Fields" />
+
+</RelativeLayout>

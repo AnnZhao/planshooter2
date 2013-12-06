@@ -1,0 +1,14 @@
+<project name="Sofia" basedir="." default="download">
+
+    <property name="download.root"
+              value="http://people.cs.vt.edu/allevato/cs2114/updates"/>
+
+    <!-- Download the latest libraries. -->
+    <target name="download">
+	    <get dest="libs" verbose="true" usetimestamp="true">
+	        <url url="${download.root}/sofia-with-dependencies.jar"/>
+	        <url url="${download.root}/student.jar"/>
+	    </get>
+    </target>
+
+</project>

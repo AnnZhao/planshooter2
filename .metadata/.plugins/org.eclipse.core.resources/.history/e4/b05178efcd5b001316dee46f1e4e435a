@@ -1,0 +1,181 @@
+package cs2114.restaurant;
+
+import realtimeweb.yelp.Business;
+import realtimeweb.yelp.BusinessSearchListener;
+import java.util.List;
+import realtimeweb.yelp.BusinessQuery;
+import realtimeweb.yelp.BusinessSearch;
+import realtimeweb.yelp.SearchResponse;
+import android.widget.*;
+import android.net.Uri;
+import sofia.app.Screen;
+import sofia.widget.ImageView;
+import sofia.content.ContentViewer;
+import realtimeweb.yelp.exceptions.BusinessSearchException;
+
+// -------------------------------------------------------------------------
+/**
+ * this is the restaurant screen class.
+ * 
+ * @author zhenshu zhao zzhens7
+ * @version 2013.12.02
+ */
+public class RestaurantScreen
+    extends Screen
+    implements BusinessSearchListener
+{
+
+    /**
+     * business searcher
+     */
+    BusinessSearch               search;
+
+    /**
+     * the circular list
+     */
+    CircularLinkedList<Business> restaurant;
+
+    private RatingBar            ratingBar;
+    private Button               viewMap;
+    private ImageView            imageView;
+    private Button               next;
+    private EditText             searchField;
+    private TextView             restaurantName;
+    private TextView             numRatings;
+    private Button               previous;
+
+
+    /**
+     * initialize and disable every button
+     */
+    public void initialize()
+    {
+        search = BusinessSearch.getInstance();
+        restaurant = new CircularLinkedList<Business>();
+        button(false);
+    }
+
+
+    @Override
+    public void businessSearchCompleted(SearchResponse result)
+    {
+        if (result.getBusinesses().isEmpty())
+        {
+            button(false);
+        }
+        else
+        {
+            button(true);
+            restaurant.clear();
+            List<Business> anotherList = result.getBusinesses();
+
+            int size = anotherList.size() - 1;
+            for (int i = size; i >= 0; i--)
+            {
+                restaurant.add(anotherList.get(i));
+            }
+
+            changeOccur();
+        }
+    }
+
+
+    @Override
+    public void businessSearchFailed(BusinessSearchException e)
+    {
+        button(false);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * when the search field was edited
+     */
+    public void searchFieldEditingDone()
+    {
+        String string = searchField.getText().toString();
+        search.searchBusinesses(
+            new BusinessQuery(string),
+            new BusinessSearchGUIAdapter(this));
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * when the next is clicked
+     */
+    public void nextClicked()
+    {
+        restaurant.next();
+        changeOccur();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * when the previous is clicked
+     */
+    public void previousClicked()
+    {
+        restaurant.previous();
+        changeOccur();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * when the view map is clicked
+     */
+    public void viewMapClicked()
+    {
+
+        double latitude = restaurant.getCurrent().getLocation().getLatitude();
+        double longitude = restaurant.getCurrent().getLocation().getLongitude();
+
+        String uriString = "http://maps.google.com/maps?q=";
+        Uri uri = Uri.parse(uriString + latitude + "," + longitude);
+        new ContentViewer(uri).start(this);
+
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * modify the screen when any change is made
+     */
+    public void changeOccur()
+    {
+
+        numRatings.setText(Integer.toString(restaurant.getCurrent()
+            .getReviewCount()));
+
+        ratingBar.setRating(restaurant.getCurrent().getRating());
+
+        restaurantName.setText(restaurant.getCurrent().getName());
+
+        if (restaurant.getCurrent().getImageUrl() != null)
+        {
+            imageView.setImageURI(Uri.parse(restaurant.getCurrent()
+                .getImageUrl()));
+        }
+        else
+        {
+            imageView.setImageURI(null);
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * enable or not the buttons
+     * 
+     * @param enable
+     *            true or false
+     */
+    public void button(boolean enable)
+    {
+        previous.setEnabled(enable);
+        next.setEnabled(enable);
+        viewMap.setEnabled(enable);
+    }
+}

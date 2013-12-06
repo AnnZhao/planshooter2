@@ -1,0 +1,15 @@
+package cs2114.aircraftbattle;
+
+import junit.framework.TestCase;
+
+public class AircraftBattleScreenTest
+    extends TestCase
+    
+{
+    private AircraftBattleScreen aircraftBattleScreen;
+    public void setUp()
+    {
+        this.initialize();
+    }
+    public voi
+}

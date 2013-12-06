@@ -1,0 +1,13 @@
+package cs2114.aircraftbattle;
+
+import junit.framework.TestCase;
+
+public class BulletTest
+    extends TestCase
+{
+    private Bullet bullet;
+    public void setUp()
+    {
+        
+    }
+}

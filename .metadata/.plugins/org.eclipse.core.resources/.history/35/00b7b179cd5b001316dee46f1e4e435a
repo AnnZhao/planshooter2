@@ -1,0 +1,130 @@
+package cs2114.restaurant;
+
+import android.widget.*;
+import android.content.Intent;
+import realtimeweb.yelp.exceptions.BusinessSearchException;
+
+// -------------------------------------------------------------------------
+/**
+ * test the RestaurantScreen class
+ *
+ * @author liuhx
+ * @version 2013.12.01
+ */
+public class RestaurantScreenTests
+    extends student.AndroidTestCase<RestaurantScreen>
+{
+    // ~ Fields ................................................................
+    private EditText  searchField;
+    private TextView  restaurantName;
+    private Button    viewMap;
+    private Button    next;
+    private Button    previous;
+    private TextView  numRatings;
+    private RatingBar ratingBar;
+
+
+    // ~ Constructors ..........................................................
+
+    // ----------------------------------------------------------
+    /**
+     * Test cases that extend AndroidTestCase must have a parameterless
+     * constructor that calls super() and passes it the screen/activity class
+     * being tested.
+     */
+    public RestaurantScreenTests()
+    {
+        super(RestaurantScreen.class);
+    }
+
+
+    // ~ Public methods ........................................................
+
+    // ----------------------------------------------------------
+    /**
+     * Initializes the text fixtures.
+     */
+    public void setUp()
+    {
+        // Nothing here
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * test the field
+     */
+    public void testSearchField()
+    {
+        enterText(searchField, "Blacksburg, VA");
+        assertEquals(20, getScreen().restaurantList.size());
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * test the next is clicked
+     */
+    public void testNext()
+    {
+        enterText(searchField, "Blacksburg, VA");
+
+        click(next);
+        assertEquals("Carol Lee Donuts", restaurantName.getText());
+        assertEquals("16", numRatings.getText());
+        assertEquals(5.0, 0.1, ratingBar.getRating());
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * test the previous is clicked
+     */
+    public void testPrevious()
+    {
+        enterText(searchField, "Blacksburg, VA");
+
+        click(previous);
+        assertEquals(
+            "Virginia Polytechnic Institute and State University",
+            restaurantName.getText());
+
+        assertEquals("5", numRatings.getText());
+        assertEquals(4.5, 0.1, ratingBar.getRating());
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * test the view map is clicked
+     */
+    public void testViewMap()
+    {
+        enterText(searchField, "Blacksburg, VA");
+        prepareForUpcomingActivity(Intent.ACTION_VIEW);
+        click(viewMap);
+        assertEquals(getScreen().restaurantList.size(), 20);
+
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * test the fail search
+     */
+    public void testBusinessSearchFailed()
+    {
+        getInstrumentation().runOnMainSync(new Runnable() {
+            public void run()
+            {
+                getScreen().businessSearchFailed(
+                    new BusinessSearchException("", "", ""));
+            }
+        });
+
+        assertEquals(false, next.isEnabled());
+        assertEquals(false, previous.isEnabled());
+        assertEquals(false, viewMap.isEnabled());
+    }
+
+}

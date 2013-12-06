@@ -1,0 +1,232 @@
+import java.util.NoSuchElementException;
+import java.util.Iterator;
+import student.TestCase;
+
+// -------------------------------------------------------------------------
+/**
+ * Tests for the {@link ArrayStack} class.
+ *
+ * @author Zhenshu Zhao (zzhens7)
+ * @version 2013.11.01
+ */
+public class ArrayStackTest
+    extends TestCase
+{
+    // ~ Instance/static variables .............................................
+
+    private Stack<String>    stack;
+    private Iterator<String> it;
+
+
+    // ~ Constructor ...........................................................
+
+    // ----------------------------------------------------------
+    /**
+     * Create a new test class
+     */
+    public ArrayStackTest()
+    {
+        // The constructor is usually empty in unit tests, since it runs
+        // once for the whole class, not once for each test method.
+        // Per-test initialization should be placed in setUp() instead.
+    }
+
+
+    // ~ Public methods ........................................................
+
+    // ----------------------------------------------------------
+    /**
+     * Creates a brand new, empty stack for each test method.
+     */
+    public void setUp()
+    {
+        stack = new ArrayStack<String>();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Test the push() method.
+     */
+    public void testPush()
+    {
+        stack.push("hello");
+        assertEquals(1, stack.size());
+        assertEquals("hello", stack.top());
+
+        stack.push("goodbye");
+        assertEquals(2, stack.size());
+        assertEquals("goodbye", stack.top());
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Test the pop() method.
+     */
+    public void testPop()
+    {
+        String word = "hello";
+        stack.push(word);
+        assertEquals(1, stack.size());
+
+        stack.pop();
+
+        // After removal, make sure the inserted object is no longer there.
+        assertEquals(0, stack.size());
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Test the topAndPop() method.
+     */
+    public void testTopAndPop()
+    {
+        String word = "hello";
+        stack.push(word);
+
+        // Use assertSame() to ensure the specific object added is the
+        // one returned here
+        assertSame(word, stack.topAndPop());
+
+        // After removal, make sure the inserted object is no longer there.
+        assertEquals(0, stack.size());
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Test clear() with multiple values in the stack.
+     */
+    public void testRemove3()
+    {
+        String word1 = "hello";
+        stack.push(word1);
+        String word2 = "goodbye";
+        stack.push(word2);
+        assertEquals(2, stack.size());
+
+        stack.clear();
+        assertEquals(0, stack.size());
+    }
+
+
+    /**
+     * Test for hasNext method.
+     */
+    public void testhasNext()
+    {
+        stack.push("1");
+        stack.push("2");
+        stack.push("3");
+        it = stack.iterator();
+        assertTrue(it.hasNext());
+    }
+
+
+    /**
+     * Test for itemnext method.y
+     */
+    public void testItemnext()
+    {
+        stack.push("1");
+        stack.push("2");
+        stack.push("3");
+        it = stack.iterator();
+        assertEquals("3", it.next());
+        assertEquals("2", it.next());
+        assertEquals("1", it.next());
+
+        Exception occurred = null;
+        try
+        {
+            it.next();
+            it.next();
+            it.next();
+        }
+        catch (Exception exception)
+        {
+            occurred = exception;
+        }
+        assertNotNull(occurred);
+        assertTrue(occurred instanceof NoSuchElementException);
+        assertEquals(
+            "There are no elements left to process.",
+            occurred.getMessage());
+
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Test the size
+     */
+    public void testStackIterator()
+    {
+        stack.push("1");
+        stack.push("2");
+        stack.push("3");
+        it = stack.iterator();
+        assertEquals(3, stack.size());
+
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Test for remove
+     */
+    public void testremove()
+    {
+        stack.push("1");
+        stack.push("2");
+        stack.push("3");
+        it = stack.iterator();
+        it.next();
+        it.remove();
+        assertEquals("2", it.next());
+
+        Exception occurred = null;
+        try
+        {
+            it.remove();
+            it.remove();
+            it.remove();
+        }
+        catch (Exception exception)
+        {
+            occurred = exception;
+        }
+        assertNotNull(occurred);
+        assertTrue(occurred instanceof IllegalStateException);
+        assertEquals("It's an error", occurred.getMessage());
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Test for remove case
+     */
+    public void testremove1()
+    {
+        stack.push("1");
+        stack.push("2");
+        stack.push("3");
+        it = stack.iterator();
+
+        Exception occurred = null;
+        try
+        {
+            it.remove();
+        }
+        catch (Exception exception)
+        {
+            occurred = exception;
+        }
+        assertNotNull(occurred);
+        assertTrue(occurred instanceof IllegalStateException);
+        assertEquals("It's an error", occurred.getMessage());
+    }
+
+}

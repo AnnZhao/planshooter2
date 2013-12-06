@@ -1,0 +1,72 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="top"
+    tools:context=".MazeSolverScreen" >
+
+    <Button
+        android:id="@+id/drawWalls"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"
+        android:text="Draw" />
+
+    <Button
+        android:id="@+id/eraseWalls"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/drawWalls"
+        android:layout_alignBottom="@+id/drawWalls"
+        android:layout_toRightOf="@+id/drawWalls"
+        android:text="Erase" />
+
+    <Button
+        android:id="@+id/setStart"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/eraseWalls"
+        android:layout_toRightOf="@+id/eraseWalls"
+        android:text="Start" />
+
+    <Button
+        android:id="@+id/setGoal"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/eraseWalls"
+        android:layout_toRightOf="@+id/setStart"
+        android:text="Goal" />
+
+    <Button
+        android:id="@+id/solve"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/setGoal"
+        android:layout_below="@+id/eraseWalls"
+        android:text="Solve" />
+
+    <TextView
+        android:id="@+id/infoLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/setStart"
+        android:layout_marginBottom="28dp"
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <sofia.graphics.ShapeView
+        android:id="@+id/shapeView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/infoLabel"
+        android:layout_alignParentLeft="true" />
+
+</RelativeLayout>

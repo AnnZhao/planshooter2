@@ -1,0 +1,96 @@
+package cs2114.restaurant;
+
+import android.widget.*;
+import android.content.Intent;
+import realtimeweb.yelp.exceptions.BusinessSearchException;
+
+// -------------------------------------------------------------------------
+/**
+ * this class is the test for restaurantscreen.
+ *
+ * @author zhenshu Zhao (zzhens7)
+ * @version (2013,12,1)
+ */
+public class RestaurantScreenTests
+extends student.AndroidTestCase<RestaurantScreen>
+{
+// ~ Fields ................................................................
+private EditText searchField;
+private TextView restaurantName;
+private Button   viewMap;
+private Button   next;
+private Button   previous;
+
+
+// ~ Constructors ..........................................................
+
+// ----------------------------------------------------------
+/**
+ * Test cases that extend AndroidTestCase must have a parameterless
+ * constructor that calls super() and passes it the screen/activity class
+ * being tested.
+ */
+public RestaurantScreenTests()
+{
+    super(RestaurantScreen.class);
+}
+
+
+// ~ Public methods ........................................................
+
+// ----------------------------------------------------------
+/**
+ * Test the searchField method.
+
+
+
+// ----------------------------------------------------------
+/**
+ * Test the next button.
+ */
+
+
+// ----------------------------------------------------------
+/**
+ * Test the previous button.
+ */
+
+
+
+// ----------------------------------------------------------
+/**
+ * Test the viewMap button.
+ */
+public void testViewMap()
+{
+    enterText(searchField, "Blacksburg, VA");
+
+    prepareForUpcomingActivity(Intent.ACTION_VIEW);
+    click(viewMap);
+    assertEquals(20, getScreen().list.size());
+
+    assertEquals(
+        "http://www.yelp.com/biz/carol-lee-donuts-blacksburg",
+        viewMap.getUrls().toString());
+}
+
+
+// ----------------------------------------------------------
+/**
+ * Test
+ */
+public void testBusinessSearchFailed()
+{
+    getInstrumentation().runOnMainSync(new Runnable() {
+        public void run()
+        {
+            getScreen().businessSearchFailed(
+                new BusinessSearchException("", "", ""));
+        }
+    });
+
+    assertEquals(false, next.isEnabled());
+    assertEquals(false, previous.isEnabled());
+    assertEquals(false, viewMap.isEnabled());
+}
+}
